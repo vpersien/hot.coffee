@@ -3,12 +3,22 @@
   "version": "0.0.1",
   "description": "A simple heatmap module written in CoffeeScript",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://vpersien@bitbucket.org/vpersien/hot.coffee.git"
+  },
   "dependencies": {
     "browserify": "^13.1.1",
     "d3": "^3.5.17",
     "underscore": "^1.8.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-browserify": "^5.0.0",
+    "grunt-contrib-coffee": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
