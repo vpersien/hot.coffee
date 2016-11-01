@@ -26,7 +26,7 @@ On construction, the constructor has to be passed a unique CSS selector (e.g. `#
 as well as an n*m array of data.
 
         constructor: (@selector, @data) ->
-            @cellSize = 4
+            @cellSize = 8
             @colorCold = '#081d58'
             @colorHot = '#ffffd9'
 
@@ -34,6 +34,7 @@ as well as an n*m array of data.
             @initColorScale()
             @initSVG()
             @buildHeatmap()
+            @initTooltip()
 
 
 First, the data has to be preprocessed, because we need the number of its rows and
@@ -65,6 +66,7 @@ Then, we want to initialize the canvas the heatmap is drawn upon.
                     )
 
             @svg = @selection.append 'svg'
+
             @container = @svg.append 'g'
 
 
@@ -97,6 +99,51 @@ with cells (i.e. squares)
                         height: @cellSize
                         fill: (d) => @colorScale d
                         )
+                    .on(
+                        mouseover: @onCellMouseOver
+                        mouseout: @onCellMouseOut
+                        )
+
+In order to display the actual data and not only colors derived from it, a tooltip
+with the corresponding value shall be shown everytime the user hovers over a cell.
+
+        onCellMouseOver: (d,i) =>
+            @showTooltip(d,i)
+
+        onCellMouseOut: (d,i) =>
+            @hideTooltip(d,i)
+
+
+The tooltip is a simple div the opacity of which is initially 0 and is set to
+something more visible in case of a cell mouse over event. At the same time,
+the position, based on the current position of the mouse pointer, is updated
+as well.
+
+        initTooltip: () ->
+            @tooltip = d3.select('body').append('div')
+                .attr('class', 'tooltip')
+                .style('opacity', 0)
+
+            @tooltipTemplate = _.template('<b><%= value %></b>')
+
+        showTooltip: (d,i) ->
+            x = d3.event.pageX
+            y = d3.event.pageY
+
+            @tooltip
+                .style(
+                    left: (x + 5) + 'px'
+                    top: (y - 25) + 'px'
+                    )
+                .html(@tooltipTemplate({value: d}))
+                .transition()
+                    .duration(200)
+                    .style('opacity', 0.9)
+
+        hideTooltip: (d,i) ->
+            @tooltip.transition()
+                .duration(500)
+                .style('opacity', 0)
 
 
 
