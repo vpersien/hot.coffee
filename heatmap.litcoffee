@@ -60,12 +60,12 @@ Then, we want to initialize the canvas the heatmap is drawn upon.
 
         initSVG: () ->
             @selection = d3.select(@selector)
-                .attr(
-                    width: @cellSize * @rows
-                    height: @cellSize * @cols
-                    )
 
             @svg = @selection.append 'svg'
+                .attr(
+                    width: @cellSize * @cols
+                    height: @cellSize * @rows
+                    )
 
             @container = @svg.append 'g'
 
@@ -116,8 +116,7 @@ with the corresponding value shall be shown everytime the user hovers over a cel
 
 The tooltip is a simple div the opacity of which is initially 0 and is set to
 something more visible in case of a cell mouse over event. At the same time,
-the position, based on the current position of the mouse pointer, is updated
-as well.
+the position, based on the current position of the mouse pointer, is also updated.
 
         initTooltip: () ->
             @tooltip = d3.select('body').append('div')
