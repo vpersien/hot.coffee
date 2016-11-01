@@ -18,16 +18,38 @@ module.exports = function(grunt) {
         },
 
         uglify: {
-            compile: {
+            prod: {
                 src: 'intermediate/heatmap-browserified.js',
                 dest: 'build/heatmap.js'
+            }
+        },
+
+        copy: {
+            dev: {
+                src: 'intermediate/heatmap-browserified.js',
+                dest: 'build/heatmap.js'
+            }
+        },
+
+        watch: {
+            options: {
+                livereload: true
+            },
+
+            dev: {
+                files: ['heatmap.litcoffee'],
+                tasks: ['dev']
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-browserify');
 
-    grunt.registerTask('default', ['coffee', 'browserify', 'uglify']);
+    grunt.registerTask('default', ['coffee', 'browserify', 'copy'])
+    grunt.registerTask('dev', ['coffee', 'browserify', 'copy'])
+    grunt.registerTask('prod', ['coffee', 'browserify', 'uglify']);
 }

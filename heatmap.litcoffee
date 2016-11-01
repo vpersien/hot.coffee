@@ -22,19 +22,35 @@ Let us begin by defining a new class `Heatmap`.
 
     class Heatmap
 
+
+These will be the basic options to be provided by the user.
+
+        defaults =
+            cellSize: 8
+            colorCold: '#081d58'
+            colorHot: '#ffffd9'
+
+
+
 On construction, the constructor has to be passed a unique CSS selector (e.g. `#foo`)
 as well as an n*m array of data.
 
-        constructor: (@selector, @data) ->
-            @cellSize = 8
-            @colorCold = '#081d58'
-            @colorHot = '#ffffd9'
+        constructor: (@selector, @data, options={}) ->
+            @configure options
 
             @preprocessData()
             @initColorScale()
             @initSVG()
             @buildHeatmap()
             @initTooltip()
+
+
+Merge user provided options and defaults into a new options object.
+
+This general technique is taken from the [Docco source](https://jashkenas.github.io/docco/).
+
+        configure: (options) ->
+            @options = _.extend {}, defaults, _.pick(options, _.keys(defaults)...)
 
 
 First, the data has to be preprocessed, because we need the number of its rows and
@@ -53,7 +69,7 @@ Now, we can create ourselves a nice color scale based on the min and max values
         initColorScale: () ->
             @colorScale = d3.scale.linear()
                 .domain([@minValue, @maxValue])
-                .range([@colorCold, @colorHot])
+                .range([@options.colorCold, @options.colorHot])
 
 
 Then, we want to initialize the canvas the heatmap is drawn upon.
@@ -63,8 +79,8 @@ Then, we want to initialize the canvas the heatmap is drawn upon.
 
             @svg = @selection.append 'svg'
                 .attr(
-                    width: @cellSize * @cols
-                    height: @cellSize * @rows
+                    width: @options.cellSize * @cols
+                    height: @options.cellSize * @rows
                     )
 
             @container = @svg.append 'g'
@@ -95,8 +111,8 @@ with cells (i.e. squares)
                         class: 'heatmap-cell'
                         x: (d,i) => @x(i)
                         y: () -> d3.select(@parentNode).attr('y')
-                        width: @cellSize
-                        height: @cellSize
+                        width: @options.cellSize
+                        height: @options.cellSize
                         fill: (d) => @colorScale d
                         )
                     .on(
@@ -148,12 +164,15 @@ the position, based on the current position of the mouse pointer, is also update
 
 ### Little helpers
 
-        x: (i) -> i*@cellSize
-        y: (i) -> i*@cellSize
+        x: (i) -> i*@options.cellSize
+        y: (i) -> i*@options.cellSize
 
 
 
-#Scribbling area
+
+
+
+### Scribbling area
 
     data = [[  9.15238487e-01,   6.38015171e-01,   2.48646533e-01,
           6.18228796e-01,   5.71105900e-01,   9.54487422e-01,
