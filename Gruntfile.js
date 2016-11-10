@@ -11,6 +11,12 @@ module.exports = function(grunt) {
         },
 
         browserify: {
+            options: {
+                browserifyOptions: {
+                    standalone: 'Heatmap',
+                    debug: true
+                }
+            },
             compile: {
                 src: 'intermediate/heatmap.js',
                 dest: 'intermediate/heatmap-browserified.js'
