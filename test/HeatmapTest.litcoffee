@@ -70,7 +70,6 @@ If, however, options are provided, these shall be set instead.
                     cellSize: 4
                     colorCold: '#000000'
                     colorHot: '#ffffff'
-                    colorRange: ['#000000', '#ffffff']
 
                 heatmap = new Heatmap selector, data, options
 

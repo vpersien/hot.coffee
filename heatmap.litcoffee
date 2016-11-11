@@ -27,8 +27,6 @@ These will be the basic options to be provided by the user.
             cellSize: 8
             colorCold: '#081d58'
             colorHot: '#ffffd9'
-            colorRange: ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']
-
 
 
 On construction, the constructor has to be passed a unique CSS selector (e.g. `#foo`)
@@ -68,7 +66,7 @@ Now, we can create ourselves a nice color scale based on the min and max values
         initColorScale: () ->
             @colorScale = d3.scale.linear()
                 .domain([@minValue, @maxValue])
-                .range([@options.colorRange[@options.colorRange.length-1], @options.colorRange[0]])
+                .range([@options.colorCold, @options.colorHot])
 
 
 Then, we want to initialize the canvas the heatmap is drawn upon.
