@@ -23,7 +23,7 @@ Let us begin by defining a new class `Heatmap`.
 
 These will be the basic options to be provided by the user.
 
-        defaults =
+        defaults:
             cellSize: 8
             colorCold: '#081d58'
             colorHot: '#ffffd9'
@@ -49,7 +49,7 @@ Merge user provided options and defaults into a new options object.
 This general technique is taken from the [Docco source](https://jashkenas.github.io/docco/).
 
         configure: (options) ->
-            @options = _.extend {}, defaults, _.pick(options, _.keys(defaults)...)
+            @options = _.extend {}, @defaults, _.pick(options, _.keys(@defaults)...)
 
 
 First, the data has to be preprocessed, because we need the number of its rows and
@@ -68,7 +68,7 @@ Now, we can create ourselves a nice color scale based on the min and max values
         initColorScale: () ->
             @colorScale = d3.scale.linear()
                 .domain([@minValue, @maxValue])
-                .range([@options.colorRange[8], @options.colorRange[0]])
+                .range([@options.colorRange[@options.colorRange.length-1], @options.colorRange[0]])
 
 
 Then, we want to initialize the canvas the heatmap is drawn upon.

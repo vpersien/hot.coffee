@@ -2,3 +2,4 @@ intermediate/
 build/
 node_modules/
 docs/
+tmp/

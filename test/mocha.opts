@@ -1,0 +1,4 @@
+--compilers litcoffee:coffee-script
+--require coffee-script/register
+--require jsdom-global/register
+--reporter spec
